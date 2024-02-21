@@ -25,15 +25,17 @@ def Text2Img(prompt, negative_prompt, steps, batch_size):
 # dall-3/dall-2 api
 def Text2ImgDall(prompt):
     dall_api_params = {
-        "model": "dall-e-3",
+        "model": "dall-e-2",
         "size": 100,
         "n": 1,
         "quality": "standard",
         "prompt": ""
     }
     dall_api_params['prompt'] = prompt
+    print(dall_api_params)
     response = requests.post(dall_url, headers=headers, json=dall_api_params)
     result = response.json()
+    print(result)
     image_list = result['result']['imageUrls']
     result_list = save_images(image_list)
     return result_list

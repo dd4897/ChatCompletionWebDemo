@@ -4,6 +4,7 @@ import time
 from openai import OpenAI
 import requests
 import matplotlib
+from fuction_tool.sdweb_generate import Text2ImgDall,Text2Img
 matplotlib.use('TkAgg')
 from dotenv import load_dotenv, find_dotenv
 import random
@@ -20,25 +21,13 @@ headers = {
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNZW1iZXJJZCI6NjAyOTcyNTQ4NzQ4MjEsIkFjY291bnQiOiJkZGw0ODk3QDE2My5jb20iLCJBY2NvdW50VHlwZSI6MSwiTmlja05hbWUiOiJkZOmaj-mjjiIsIkxvZ2luTW9kZSI6MiwiaWF0IjoxNzA4MzA2NTM3LCJuYmYiOjE3MDgzMDY1MzcsImV4cCI6MTcwOTAyNjUzNywiaXNzIjoiQUlUb29scyIsImF1ZCI6IkFJVG9vbHMifQ.uJ_bo82Sl7CC3cygvZ1A6U0dBo0x3EJNXAzQHMND7SU"
 }
 
-def generate_images_with_prompts(prompt, navigator_prompt):
-    if not navigator_prompt:
-        data = {
-            "model": "dall-e-3",
-            "size": 100,
-            "n": 1,
-            "quality": "standard",
-            "prompt": "黄昏的街道"
-        }
-        data['prompt'] = prompt
-        response = requests.post(url, headers=headers, json=data)
-        res = response.json()
-        images = [
-            (random.choice(res['result']['imageUrls']), f"U 0")
-        ]
-        return images
+def generate_images_with_prompts(prompt, navigator_prompt,slider,model_select):
+    if model_select != "stable-diffusion":
+        image_list = Text2ImgDall(prompt)
+        return image_list
     else:
-
-        return images
+        image_list = Text2Img(prompt,navigator_prompt,steps=20,batch_size=slider)
+        return image_list
 
 
 
@@ -123,7 +112,7 @@ def chat_image_component():
             btn = gr.Button("Generate images")
             btn.click(
                 generate_images_with_prompts,
-                [prompt_input, navigator_prompt_input],
+                [prompt_input, navigator_prompt_input,slider,model_select],
                 gallery
             )
 
