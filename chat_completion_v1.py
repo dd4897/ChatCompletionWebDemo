@@ -132,4 +132,4 @@ with gr.Blocks() as app:
             other_tab_content_2()
 
 if __name__ == "__main__":
-    app.launch()
+    app.launch(server_port=7861)
