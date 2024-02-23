@@ -2,13 +2,14 @@ import gradio as gr
 import os
 import time
 from openai import OpenAI
-import requests
 import matplotlib
 from fuction_tool.sdweb_generate import Text2ImgDall,Text2Img
 matplotlib.use('TkAgg')
 from dotenv import load_dotenv, find_dotenv
-import random
-
+import json
+import urllib.error
+import urllib.parse
+import urllib.request
 # 加载环境变量和初始化API
 _ = load_dotenv(find_dotenv())
 openai = OpenAI(
@@ -116,11 +117,47 @@ def chat_image_component():
                 gallery
             )
 
+def translate(sentence, src_lan, tgt_lan, apikey):
+    url = 'http://api.niutrans.com/NiuTransServer/translation?'
+    data = {"from": src_lan, "to": tgt_lan, "apikey": apikey, "src_text": sentence}
+    data_en = urllib.parse.urlencode(data)
+    req = url + "&" + data_en
+    res = urllib.request.urlopen(req)
+    res = res.read()
+    res_dict = json.loads(res)
+    if "tgt_text" in res_dict:
+        result = res_dict['tgt_text']
+    else:
+        result = res
+    return result
 # 创建其他Tab页面的内容（示例）
-def other_tab_content_1():
-    with gr.Column():
-        gr.Markdown("### This is another tab page where you can add more content.")
-        # 添加更多的控件和功能
+def chat_completion_translate():
+    gr.Markdown("### Translate your text from one language to another")
+    source_language = gr.Radio(['zh', "en"], label="Source Language")
+    target_language = gr.Radio(["th", "en"], label="Target Language")
+    sentence_input = gr.Textbox(label="Enter Sentence")
+    output_text = gr.Textbox(label="Translated Sentence", interactive=False)
+    submit_button = gr.Button("Translate")
+    def translate(sentence, src_lan, tgt_lan):
+        url = 'http://api.niutrans.com/NiuTransServer/translation?'
+        data = {"from": src_lan, "to": tgt_lan, "apikey": os.getenv("Translate_key"), "src_text": sentence}
+        data_en = urllib.parse.urlencode(data)
+        req = url + "&" + data_en
+        res = urllib.request.urlopen(req)
+        res = res.read()
+        res_dict = json.loads(res)
+        if "tgt_text" in res_dict:
+            result = res_dict['tgt_text']
+        else:
+            result = res
+        return result
+
+    submit_button.click(
+        fn=translate,
+        inputs=[sentence_input, source_language, target_language],
+        outputs=output_text
+    )
+
 
 def other_tab_content_2():
     with gr.Column():
@@ -131,8 +168,8 @@ with gr.Blocks() as app:
     with gr.Tabs():
         with gr.TabItem("Chat & Image Generation"):
             chat_image_component()
-        with gr.TabItem("Other Tab 1"):
-            other_tab_content_1()
+        with gr.TabItem("Translate"):
+            chat_completion_translate()
         with gr.TabItem("Other Tab 2"):
             other_tab_content_2()
 

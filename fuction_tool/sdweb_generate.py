@@ -1,12 +1,15 @@
 import requests
 import uuid
 import base64
+
 img_path = f"D:\yuanlis_project\Aicontent\ChatCompletion\ChatCompletionWebDemo\generate_img\img_"
 dall_url = "https://api.xiabb.chat/chatapi/drawing/task"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNZW1iZXJJZCI6NjAyOTcyNTQ4NzQ4MjEsIkFjY291bnQiOiJkZGw0ODk3QDE2My5jb20iLCJBY2NvdW50VHlwZSI6MSwiTmlja05hbWUiOiJkZOmaj-mjjiIsIkxvZ2luTW9kZSI6MiwiaWF0IjoxNzA4MzA2NTM3LCJuYmYiOjE3MDgzMDY1MzcsImV4cCI6MTcwOTAyNjUzNywiaXNzIjoiQUlUb29scyIsImF1ZCI6IkFJVG9vbHMifQ.uJ_bo82Sl7CC3cygvZ1A6U0dBo0x3EJNXAzQHMND7SU"
 }
+
+
 # sdwebuiapi text to img
 def Text2Img(prompt, negative_prompt, steps, batch_size):
     sd_api_params = {
@@ -22,6 +25,8 @@ def Text2Img(prompt, negative_prompt, steps, batch_size):
     response = requests.post("http://127.0.0.1:7860/sdapi/v1/txt2img", json=sd_api_params)
     result_list = save_images(response.json()["images"])
     return result_list
+
+
 # dall-3/dall-2 api
 def Text2ImgDall(prompt):
     dall_api_params = {
@@ -40,6 +45,7 @@ def Text2ImgDall(prompt):
     result_list = save_images(image_list)
     return result_list
 
+
 def save_images(image_list):
     # base64 or https url
     result_list = []
@@ -47,11 +53,9 @@ def save_images(image_list):
         return image_list
     for i in image_list:
         rsa = uuid.uuid4()
-        with open(img_path+f"{str(rsa)}.png",
+        with open(img_path + f"{str(rsa)}.png",
                   "wb") as image_file:
             image_file.write(base64.b64decode(i))
             result_list.append(
-                img_path+f"{str(rsa)}.png")
+                img_path + f"{str(rsa)}.png")
     return result_list
-
-
