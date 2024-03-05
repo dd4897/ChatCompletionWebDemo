@@ -6,7 +6,7 @@ img_path = f"D:\yuanlis_project\Aicontent\ChatCompletion\ChatCompletionWebDemo\g
 dall_url = "https://api.xiabb.chat/chatapi/drawing/task"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNZW1iZXJJZCI6NjAyOTcyNTQ4NzQ4MjEsIkFjY291bnQiOiJkZGw0ODk3QDE2My5jb20iLCJBY2NvdW50VHlwZSI6MSwiTmlja05hbWUiOiJkZOmaj-mjjiIsIkxvZ2luTW9kZSI6MiwiaWF0IjoxNzA4MzA2NTM3LCJuYmYiOjE3MDgzMDY1MzcsImV4cCI6MTcwOTAyNjUzNywiaXNzIjoiQUlUb29scyIsImF1ZCI6IkFJVG9vbHMifQ.uJ_bo82Sl7CC3cygvZ1A6U0dBo0x3EJNXAzQHMND7SU"
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNZW1iZXJJZCI6NjAyOTcyNTQ4NzQ4MjEsIkFjY291bnQiOiJkZGw0ODk3QDE2My5jb20iLCJBY2NvdW50VHlwZSI6MSwiTmlja05hbWUiOiJkZOmaj-mjjiIsIkxvZ2luTW9kZSI6MiwiaWF0IjoxNzA5MjcyMTY2LCJuYmYiOjE3MDkyNzIxNjYsImV4cCI6MTcwOTk5MjE2NiwiaXNzIjoiQUlUb29scyIsImF1ZCI6IkFJVG9vbHMifQ.fL2cO_ExJU2ZSGCWf4PUoVNS0fSxt-hy0m8T0nApthE"
 }
 
 
@@ -30,7 +30,7 @@ def Text2Img(prompt, negative_prompt, steps, batch_size):
 # dall-3/dall-2 api
 def Text2ImgDall(prompt):
     dall_api_params = {
-        "model": "dall-e-2",
+        "model": "dall-e-3",
         "size": 100,
         "n": 1,
         "quality": "standard",
