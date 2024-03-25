@@ -1,3 +1,3 @@
 # ChatCompletionWebDemo
 Simple gradio page, to achieve generative ai and Vincennes chart and other functions support
-![img.png](img.png)
+![./static/img.png](static/img.png)

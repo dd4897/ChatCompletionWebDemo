@@ -2,7 +2,7 @@ import requests
 import uuid
 import base64
 
-img_path = f"D:\yuanlis_project\Aicontent\ChatCompletion\ChatCompletionWebDemo\generate_img\img_"
+img_path = f"D:\PythonProgram\ChatCompletionWebDemo\generate_img\img_"
 dall_url = "https://api.xiabb.chat/chatapi/drawing/task"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",

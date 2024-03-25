@@ -1,10 +1,16 @@
-import json
 import urllib.error
 import urllib.parse
 import urllib.request
-def translate(sentence, src_lan, tgt_lan, apikey):
+import gradio as gr
+import json
+from dotenv import load_dotenv, find_dotenv
+import os
+# 加载环境变量和初始化API
+_ = load_dotenv(find_dotenv())
+def translate(sentence, src_lan, tgt_lan):
     url = 'http://api.niutrans.com/NiuTransServer/translation?'
-    data = {"from": src_lan, "to": tgt_lan, "apikey": apikey, "src_text": sentence}
+    api_key = os.getenv('Translate_key')
+    data = {"from": src_lan, "to": tgt_lan, "apikey": api_key, "src_text": sentence}
     data_en = urllib.parse.urlencode(data)
     req = url + "&" + data_en
     res = urllib.request.urlopen(req)
@@ -15,6 +21,16 @@ def translate(sentence, src_lan, tgt_lan, apikey):
     else:
         result = res
     return result
-if __name__ == "__main__":
-    trans = translate("你好", 'zh', 'th', 'abb4cde6ab17ac9f5377c2d4a527fd31')
-    print(trans)
+# 创建其他Tab页面的内容（示例）
+def chat_completion_translate():
+    gr.Markdown("### Translate your text from one language to another")
+    source_language = gr.Radio(['zh', "en"], label="Source Language")
+    target_language = gr.Radio(["th", "en"], label="Target Language")
+    sentence_input = gr.Textbox(label="Enter Sentence")
+    output_text = gr.Textbox(label="Translated Sentence", interactive=False)
+    submit_button = gr.Button("Translate")
+    submit_button.click(
+        fn=translate,
+        inputs=[sentence_input, source_language, target_language],
+        outputs=output_text
+    )
